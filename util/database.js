@@ -1,11 +1,11 @@
 const mongodb = require('mongodb')
 const client = mongodb.MongoClient;
-console.log("db url ",process.env.mongodbURL)
+// console.log("db url ",process.env.mongodbURL)
 
 let _db;
 const mongodbClient = callback => {
   client.connect(process.env.mongodbURL).then((res)=>{
-    console.log("res" ,res)
+    // console.log("res" ,res)
     _db = res.db()
     callback()
   }).catch(err=>{
