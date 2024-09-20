@@ -50,6 +50,35 @@ class User{
     })
   }
 
+  getCart(){
+    let db = getDb()
+    const productIds = this.cart.items.map(p=>{
+      return p.productId
+    })
+    return db.collection('products').find({_id:{$in:productIds}}).toArray().then((products)=>{
+      return products.map(p=>{
+        return {
+          ...p,
+          quantity:this.cart.items.find(item=>{
+            return item.productId.toString()===p._id.toString()
+          }).quantity
+        }
+      })
+    })
+  }
+
+  deleteFromCart(id){
+    // id = new mongodb.ObjectId()
+    console.log("prev ",id,this.cart.items);
+    
+    let updatedCart = this.cart.items.filter(products=>products.productId!=id)
+    
+    console.log("up ",updatedCart)
+    const db = getDb()
+    return db.collection('users').updateOne({_id:new mongodb.ObjectId(this._id)},{
+      $set:{cart:{items:updatedCart}}
+    })
+  }
 
 }
 
