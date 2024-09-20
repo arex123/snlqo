@@ -1,6 +1,6 @@
 const getDb = require('../util/database').getDb
 const mongodb = require('mongodb')
-
+const order = require('./order')
 class User{
   constructor(name,email,id,cart){
     this.name = name
@@ -78,6 +78,25 @@ class User{
     return db.collection('users').updateOne({_id:new mongodb.ObjectId(this._id)},{
       $set:{cart:{items:updatedCart}}
     })
+  }
+
+  createOrder(products){
+    const db = getDb()
+    return db.collection('orders').insertOne({products,userId:this._id})
+  }
+
+  
+  emptyCart(){
+    const db = getDb()
+    return db.collection('users').updateOne({_id:new mongodb.ObjectId(this._id)},{
+      $set:{cart:{items:[]}}
+    })
+  }
+
+
+  getOrders(){
+    let db = getDb()
+    return db.collection('orders').find({userId:this._id}).toArray()
   }
 
 }

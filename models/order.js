@@ -1,14 +1,16 @@
-const Sequelize = require('sequelize');
-
-const sequelize = require('../util/database');
-
-const Order = sequelize.define('order', {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true
+let getDb = require('../util/database').getDb
+class Order{
+  constructor(userId,products){
+    this.userId = userId
+    this.products = products
   }
-});
+
+  // getOrders(){
+  //   let db = getDb()
+  //   return db.collection('orders').find({userId:this.userId})
+  // }
+
+  
+}
 
 module.exports = Order;
