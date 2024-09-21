@@ -9,6 +9,7 @@ let userSchema = new Schema({
       {
         productId: {
           type: Schema.Types.ObjectId,
+          ref:'Product',
           required: true,
         },
         quantity:{type:Number,required:true}
@@ -43,4 +44,17 @@ userSchema.methods.addToCart = function(product){
     this.cart = updatedCart
     return this.save()
 }
+
+userSchema.methods.getCart = function(){
+  return this.cart.items
+}
+userSchema.methods.deleteFromCart = function(id){
+  
+  let updatedCart = this.cart.items.filter(products=>products.productId!=id)
+  this.cart.items = updatedCart
+  
+  return this.save()
+
+}
+
 module.exports = mongoose.model("User", userSchema);
